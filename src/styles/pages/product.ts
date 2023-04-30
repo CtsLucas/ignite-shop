@@ -3,16 +3,24 @@ import { styled } from "..";
 export const ProductContainer = styled("div", {
   display: "grid",
   gridTemplateColumns: "repeat(2, 1fr)",
+
   alignItems: "stretch",
-  gap: "4rem",
+  justifyContent: "space-evenly",
+  gap: "1rem",
 
   maxWidth: 1180,
   margin: "0 auto",
+
+  "@media (max-width: 768px)": {
+    gridTemplateColumns: "1fr",
+    alignItems: "center",
+    justifyContent: "center",
+  },
 });
 
 export const ImageContainer = styled("div", {
   width: "100%",
-  maxWidth: 576,
+  maxWidth: 520,
   height: 656,
   background: "linear-gradient(180deg, #1ea483 0%, #7465d4 100%)",
   borderRadius: 8,
@@ -21,15 +29,24 @@ export const ImageContainer = styled("div", {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+  margin: "0 auto",
 
   img: {
     objectFit: "cover",
+    height: "auto",
+  },
+
+  "@media (max-width: 768px)": {
+    maxWidth: 400,
+    height: 400,
   },
 });
 
 export const ProductDetails = styled("div", {
   display: "flex",
   flexDirection: "column",
+
+  padding: " 0 2rem",
 
   h1: {
     fontSize: "$2xl",

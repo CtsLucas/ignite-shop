@@ -1,49 +1,23 @@
-import { stripe } from "@/src/lib/stripe";
-import {
-  ImageContainer,
-  ProductContainer,
-  ProductDetails,
-} from "@/src/styles/pages/product";
-import axios from "axios";
+import { useContext } from "react";
 import { GetStaticProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useState } from "react";
 import Stripe from "stripe";
 
+import { CartContext, ProductType } from "@/src/contexts/CartContext";
+import { formatCurrency } from "@/src/utils/formatCurrency";
+import { stripe } from "@/src/lib/stripe";
+import * as ProductStyles from "@/src/styles/pages/product";
+
 interface ProductProps {
-  product: {
-    id: string;
-    name: string;
-    description: string;
-    imageUrl: string;
-    price: string;
-    defaultPriceId: string;
-  };
+  product: ProductType;
 }
 
 export default function Product({ product }: ProductProps) {
-  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
-    useState(false);
+  const { onAddToCart, isProductAlreadyInCart } = useContext(CartContext);
 
   const { isFallback } = useRouter();
-
-  async function handleBuyProduct() {
-    try {
-      setIsCreatingCheckoutSession(true);
-      const response = await axios.post("/api/checkout-session", {
-        priceId: product.defaultPriceId,
-      });
-
-      const { checkoutUrl } = response.data;
-
-      window.location.href = checkoutUrl;
-    } catch (error) {
-      setIsCreatingCheckoutSession(false);
-      alert("Falha ao redirecionar ao checkout!");
-    }
-  }
 
   if (isFallback) {
     return <p>Carregando...</p>;
@@ -55,25 +29,25 @@ export default function Product({ product }: ProductProps) {
         <title>{product.name} | Ignite Shop</title>
       </Head>
 
-      <ProductContainer>
-        <ImageContainer>
+      <ProductStyles.ProductContainer>
+        <ProductStyles.ImageContainer>
           <Image src={product.imageUrl} width={520} height={480} alt="" />
-        </ImageContainer>
+        </ProductStyles.ImageContainer>
 
-        <ProductDetails>
+        <ProductStyles.ProductDetails>
           <h1>{product.name}</h1>
-          <span>{product.price}</span>
+          <span>{formatCurrency(product.price)}</span>
 
           <p>{product.description}</p>
 
           <button
-            onClick={handleBuyProduct}
-            disabled={isCreatingCheckoutSession}
+            onClick={() => onAddToCart(product)}
+            disabled={isProductAlreadyInCart(product.id)}
           >
             Comprar agora
           </button>
-        </ProductDetails>
-      </ProductContainer>
+        </ProductStyles.ProductDetails>
+      </ProductStyles.ProductContainer>
     </>
   );
 }
@@ -96,10 +70,7 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
         name: product.name,
         description: product.description,
         imageUrl: product.images[0],
-        price: new Intl.NumberFormat("pt-BR", {
-          style: "currency",
-          currency: "BRL",
-        }).format(price.unit_amount! / 100),
+        price: price.unit_amount,
         defaultPriceId: price.id,
       },
     },

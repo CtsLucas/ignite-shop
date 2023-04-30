@@ -37,23 +37,55 @@ export const Product = styled("div", {
     padding: "2rem",
     borderRadius: 6,
 
-    transform: "translateY(110%)",
-    opacity: 0,
-    transition: "all 0.2s ease-in-out",
-
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
 
-    strong: {
-      fontSize: "$lg",
-      color: "$gray100",
+    transform: "translateY(110%)",
+    opacity: 0,
+    transition: "all 0.2s ease-in-out",
+
+    "& .product__details": {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "flex-start",
+      justifyContent: "space-between",
+
+      strong: {
+        fontSize: "$lg",
+        color: "$gray100",
+      },
+
+      span: {
+        fontSize: "$xl",
+        fontWeight: "bold",
+        color: "$green300",
+      },
     },
 
-    span: {
-      fontSize: "$xl",
+    button: {
+      marginTop: "auto",
+      background: "$green500",
+      border: 0,
+      borderRadius: 8,
+      padding: "0.75rem",
+      color: "$white",
+      fontSize: "$md",
       fontWeight: "bold",
-      color: "$green300",
+      cursor: "pointer",
+
+      "&:disabled": {
+        opaticy: 0.6,
+        cursor: "not-allowed",
+      },
+
+      "&:not(:disabled):hover": {
+        background: "$green300",
+      },
+
+      "& svg": {
+        color: "$white",
+      },
     },
   },
 

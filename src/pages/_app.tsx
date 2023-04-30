@@ -1,20 +1,32 @@
 import type { AppProps } from "next/app";
-import { globalStyles } from "../styles/global";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
+import { Cart } from "../components/Cart";
+import { CartContextProvider } from "../contexts/CartContext";
 import logoImg from "../assets/logo.svg";
-import { Container, Header } from "../styles/pages/app";
+import { globalStyles } from "../styles/global";
+import * as AppStyles from "../styles/pages/app";
 
 globalStyles();
 
 export default function App({ Component, pageProps }: AppProps) {
-  return (
-    <Container>
-      <Header>
-        <Image src={logoImg} alt="" />
-      </Header>
+  const router = useRouter();
 
-      <Component {...pageProps} />
-    </Container>
+  return (
+    <CartContextProvider>
+      <AppStyles.Container>
+        <AppStyles.Header>
+          <Link href="/">
+            <Image src={logoImg} alt="" />
+          </Link>
+
+          {router.pathname !== "/success" && <Cart />}
+        </AppStyles.Header>
+
+        <Component {...pageProps} />
+      </AppStyles.Container>
+    </CartContextProvider>
   );
 }
