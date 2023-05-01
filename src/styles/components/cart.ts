@@ -78,6 +78,10 @@ export const CartContent = styled(Dialog.Content, {
   height: "100%",
   background: "$gray800",
   padding: 24,
+
+  '@media (max-width: 768px)': {
+    width: 'calc(100% - 1.25rem)',
+  }
 });
 
 export const CartClose = styled(Dialog.Close, {

@@ -37,8 +37,8 @@ export const ImageContainer = styled("div", {
   },
 
   "@media (max-width: 768px)": {
-    maxWidth: 400,
-    height: 400,
+    maxWidth: 300,
+    height: 300,
   },
 });
 
@@ -85,6 +85,10 @@ export const ProductDetails = styled("div", {
 
     "&:not(:disabled):hover": {
       background: "$green300",
+    },
+
+    "@media (max-width: 768px)": {
+      marginTop: "2rem",
     },
   },
 });

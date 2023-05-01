@@ -23,8 +23,13 @@ export const Product = styled("div", {
   alignItems: "center",
   justifyContent: "center",
 
+  "@media (max-width: 768px)": {
+    height: "auto",
+  },
+
   img: {
     objectFit: "cover",
+    height: "auto",
   },
 
   footer: {
